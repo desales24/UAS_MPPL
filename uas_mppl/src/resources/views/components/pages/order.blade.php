@@ -117,7 +117,7 @@ function formatCategory($category) {
                      <h3 class="types_text">{{ $item->name }}</h3>
                      <p class="looking_text">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
                      <div class="read_bt mt-3">
-                        <a href="http://localhost/customer">Order Now</a>
+                        <a href="http://localhost/customer/login">Order Now</a>
                      </div>
                   </div>
                </div>
@@ -147,7 +147,7 @@ function formatCategory($category) {
                         <h3 class="types_text">{{ $item->name }}</h3>
                         <p class="looking_text">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
                         <div class="read_bt">
-                           <a href="http://localhost/customer">Order Now</a>
+                           <a href="http://localhost/customer/login">Order Now</a>
                         </div>
                      </div>
                   @endforeach

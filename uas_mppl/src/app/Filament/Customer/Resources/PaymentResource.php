@@ -33,14 +33,18 @@ class PaymentResource extends Resource
                 ->searchable()
                 ->required()
                 ->options(
-                    Order::where('customer_id', Auth::id())
-                        ->whereHas('payment', fn ($q) => $q->whereIn('status', ['belum bayar', 'gagal']))
-                        ->orWhereDoesntHave('payment')
-                        ->with('customer')
-                        ->get()
-                        ->mapWithKeys(fn ($order) => [
-                            $order->id => '#' . $order->id . ' (Rp ' . number_format($order->total, 0, ',', '.') . ')',
-                        ])
+                    Order::where(function ($query) {
+                        $query->where('customer_id', Auth::id())
+                            ->where(function ($q) {
+                                $q->whereHas('payment', fn ($q2) => $q2->whereIn('status', ['belum bayar', 'gagal']))
+                                  ->orWhereDoesntHave('payment');
+                            });
+                    })
+                    ->with('customer')
+                    ->get()
+                    ->mapWithKeys(fn ($order) => [
+                        $order->id => '#' . $order->id . ' - ' . $order->customer->name . ' (Rp ' . number_format($order->total, 0, ',', '.') . ')',
+                    ])
                 )
                 ->live()
                 ->afterStateUpdated(fn ($set, $state) => $set('amount', Order::find($state)?->total ?? 0)),
@@ -72,8 +76,6 @@ class PaymentResource extends Resource
                 ->label('Waktu Pembayaran')
                 ->default(now())
                 ->required(),
-
-            // Status tidak ditampilkan di form customer
         ]);
     }
 
@@ -92,9 +94,7 @@ class PaymentResource extends Resource
                     'gagal' => 'danger',
                     default => 'gray',
                 }),
-
             TextColumn::make('paid_at')->label('Waktu Bayar')->dateTime(),
-
             TextColumn::make('proof_of_payment')
                 ->label('Bukti Pembayaran')
                 ->formatStateUsing(fn ($state) => $state ? 'Lihat' : '-'),
@@ -107,7 +107,6 @@ class PaymentResource extends Resource
                 ->label('Cetak Struk')
                 ->icon('heroicon-o-printer')
                 ->color('gray')
-                ->visible(fn ($record) => $record->status === 'lunas')
                 ->url(fn ($record) => route('print.struk', ['payment' => $record->id]))
                 ->openUrlInNewTab(),
         ])

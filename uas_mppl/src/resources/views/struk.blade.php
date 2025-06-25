@@ -258,7 +258,7 @@
                 <p class="bank-name">Rekening Pembayaran</p>
                 <p>Bank: <strong>BANK MANDIRI</strong></p>
                 <p>Nomor Rekening: <span class="account-number">123 4567 8900</span></p>
-                <p>Atas Nama: <strong>TOKO ANDA SEJAHTERA</strong></p>
+                <p>Atas Nama: <strong>AHHH Restaurant</strong></p>
                 @if($payment->card_number)
                     <p style="margin-top: 10px;">No. Kartu: <span class="account-number">{{ $payment->card_number }}</span></p>
                 @endif

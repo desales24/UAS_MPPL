@@ -113,7 +113,7 @@ class PaymentResource extends Resource
                     ->label('Cetak Struk')
                     ->icon('heroicon-o-printer')
                     ->color('gray')
-                    ->visible(fn ($record) => $record->status === 'lunas')
+                    // Hapus kondisi visible agar tampil di semua status
                     ->url(fn ($record) => route('print.struk', ['payment' => $record->id]))
                     ->openUrlInNewTab(),
             ])

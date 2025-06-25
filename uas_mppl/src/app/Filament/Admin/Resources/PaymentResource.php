@@ -90,8 +90,7 @@ class PaymentResource extends Resource
                 TextColumn::make('order.customer.name')->label('Pelanggan')->searchable(),
                 TextColumn::make('order.id')->label('No. Pesanan'),
 
-                TextColumn::make('method')
-                    ->label('Metode'), // Badge removed here
+                TextColumn::make('method')->label('Metode'),
 
                 TextColumn::make('amount')->label('Jumlah')->money('IDR', true),
 
@@ -120,13 +119,12 @@ class PaymentResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(), // Delete action added
+                Tables\Actions\DeleteAction::make(),
 
                 Action::make('cetakStruk')
                     ->label('Cetak Struk')
                     ->icon('heroicon-o-printer')
                     ->color('gray')
-                    ->visible(fn ($record) => $record->status === 'lunas')
                     ->url(fn ($record) => route('print.struk', ['payment' => $record->id]))
                     ->openUrlInNewTab(),
             ])
